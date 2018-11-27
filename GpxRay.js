@@ -3,7 +3,7 @@
 
 // Use tiles from MapQuest; http://developer.mapquest.com/web/products/open/map
 var TILE_LAYER = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors',
+    attribution: 'Map data ï¿½ <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors',
 });
 
 /* Variables */
@@ -67,7 +67,7 @@ function parseGPX(xmlDocument) {
             lon: lon,
             elevation: parseFloat(point.children('ele').text()),
             time: new Date(point.children('time').text()),
-            heartRate: parseFloat(point.children('hr').text()),
+            heartRate: parseFloat(point.children('extensions').text()),
 
         });
     });
