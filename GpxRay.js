@@ -89,15 +89,17 @@ function cumulativeDistance(index) {
 /** point description. */
 function pointDescription(index) {
     var point = points[index];
-
     var elapsedTime = Math.round((point.time - points[0].time) / 60000);
     var timeFraction = (point.time - points[0].time) / (points[points.length - 1].time - points[0].time);
     var distFraction = cumulativeDistance(index) / cumulativeDistance(points.length - 1);
+    var dist_miles = cumulativeDistance(index) / 1609.34;
+    var averSpeed = dist_miles / (elapsedTime/60)
     var description =
         'Time: ' + '<span title="' + point.time.toISOString() + '">' + elapsedTime + ' min</span>' +
         ' (' + Math.round(timeFraction * 100) + '%)' +
-        '<br />' + 'Elevation: ' + point.elevation + ' m' + '<br />' +
-        '<br />'+'Heart-Rate: ' + point.heartRate + 'Bpm' + '<br />'
+        '<br />' + 'Elevation: ' + Math.round(point.elevation * 100) / 100 + ' m' + '<br />' +
+        'Average Speed: ' + Math.round(averSpeed * 100) / 100 + ' Mph'+'<br />'
+        +'Heart-Rate: ' + point.heartRate + ' Bpm' + '<br />'
 
          + 'Distance: ' + Math.round(cumulativeDistance(index)) + ' m' +
         ' (' + Math.round(distFraction * 100) + '%)';
