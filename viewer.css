@@ -40,7 +40,7 @@ header {
 #drop {
     margin: 15px auto;
     width: 400px;
-    height: 600px;
+    height: 200px;
 }
 
     #drop p {
@@ -80,7 +80,7 @@ footer {
 #text-box {
     margin: 15px auto;
     width: 400px;
-    height: 600px;
+    height: 100px;
     float: left;
 }
     #text-box div {
