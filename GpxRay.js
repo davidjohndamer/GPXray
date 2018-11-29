@@ -75,7 +75,37 @@ function parseGPX(xmlDocument) {
     return true;
 }
 
+function getMaxElevation(){
+    var maxElevation = 0;
+    for (var i = 0; i < points.length; i++){
+        if (points[i].elevation > maxElevation){
+            maxElevation = points[i].elevation;
+        }
 
+    }
+    return maxElevation;
+}
+function getMaxHr(){
+    var maxHr = 0;
+    for (var i = 0; i < points.length; i++){
+        if (points[i].heartRate > maxHr){
+            maxHr = points[i].heartRate;
+        }
+    }
+    return maxHr;
+}
+function getTotalDistance(){
+    var totaldistance = cumulativeDistance(points.length - 1)/ 1609.34;
+    return totaldistance;
+}
+function getTotalTime(){
+    var totalTime = Math.round((points[points.length - 1].time - points[0].time)/60000);
+    return totalTime;
+}
+function getAverageSpeed(){
+    var averageSpeed = getTotalDistance() / (getTotalTime()/60);
+    return averageSpeed;
+}
 
 /** returns the distance from starting point to given point. */
 function cumulativeDistance(index) {
@@ -84,6 +114,20 @@ function cumulativeDistance(index) {
         dist += coords[i].distanceTo(coords[i + 1]);
     }
     return dist;
+}
+function maxDescription(){
+    var maxHr = getMaxHr();
+    var totalDistance = getTotalDistance();
+    var averSpeed = getAverageSpeed();
+    var totalTime = getTotalTime();
+    var maxEle = getMaxElevation();
+    var maxDesc = 
+        'Total Time: ' + totalTime + ' min' + '<br />'
+        + 'Total Distance: ' + Math.round(totalDistance * 100)/100 + ' miles' + '<br />'
+        + 'Average overall speed: ' + Math.round(averSpeed * 100) / 100 + ' Mph' + '<br />'
+        + 'Maximum elevation: ' + maxEle + ' m' + '<br />'
+        + 'Maximum Heartrate ' + maxHr + ' Bpm';
+    return maxDesc;
 }
 
 /** point description. */
@@ -126,6 +170,7 @@ function pointMarker(target) {
     var closestIndex = findClosestPoint(target);
     var description = pointDescription(closestIndex);
     L.popup().setLatLng(coords[closestIndex]).setContent(description).openOn(maps);
+
 }
 
 /** display metadata locations. */
@@ -142,6 +187,9 @@ function drawPath() {
         pointMarker(e.latlng);
     });
     L.control.scale().addTo(maps);
+    var maxDesc = maxDescription();
+    L.popup({autoClose: false, closeButton: false, keepInView: true, permanent: true}).setLatLng(coords[0]).setContent(maxDesc).openOn(maps);
+   
 }
 
 /** load files, parse the XML and display on map. */
@@ -164,6 +212,7 @@ function loadFiles(files) {
             displayMetadata();
             initMap();
             drawPath();
+            
         }
     }
 
