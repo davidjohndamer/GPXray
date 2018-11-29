@@ -191,9 +191,15 @@ function drawPath() {
     L.popup({autoClose: false, closeButton: false, keepInView: true, permanent: true}).setLatLng(coords[0]).setContent(maxDesc).openOn(maps);
    
 }
-
+var gpxData;
 /** load files, parse the XML and display on map. */
 function loadFiles(files) {
+
+        //attempting to get GPX data
+    //gpxData = new L.GPX(files[0], {});
+    //console.log(gpxData.get_name());
+
+
     var reader = new FileReader();
     reader.onloadend = function (e) {
         var data = this.result;
@@ -240,6 +246,7 @@ $('#drop').bind({
         e = e.originalEvent;
         var files = e.dataTransfer.files;
         loadFiles(files);
+
 
         return false;
     }
