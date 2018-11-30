@@ -195,9 +195,6 @@ var gpxData;
 /** load files, parse the XML and display on map. */
 function loadFiles(files) {
 
-        //attempting to get GPX data
-    //gpxData = new L.GPX(files[0], {});
-    //console.log(gpxData.get_name());
 
 
     var reader = new FileReader();
@@ -219,6 +216,12 @@ function loadFiles(files) {
             initMap();
             drawPath();
             
+    // get GPX data and use to create graphs
+    gpxData = new L.GPX(files[0].name, {});
+    console.log(files[0].name);
+    loadGraphs(gpxData);
+    $("#tabs").show();
+
         }
     }
 

@@ -1,0 +1,30 @@
+.ct-series-a .ct-slice-donut {
+  /* give the donut slice a custom colour */
+  stroke: #59922b;
+}
+
+.ct-series-b .ct-slice-donut {
+    /* give the donut slice a custom colour */
+    stroke: #b2c326;
+  }
+
+  .ct-series-c .ct-slice-donut {
+    /* give the donut slice a custom colour */
+    stroke: #eacf7d;
+  }
+
+  .ct-series-d .ct-slice-donut {
+    /* give the donut slice a custom colour */
+    stroke: #d17905;
+  }
+
+  .ct-series-e .ct-slice-donut {
+    /* give the donut slice a custom colour */
+    stroke: #f05b4f;
+  }
+
+  .ct-series-f .ct-slice-donut {
+    /* give the donut slice a custom colour */
+    stroke: #d70206;
+  }
+
