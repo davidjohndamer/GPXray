@@ -1,14 +1,8 @@
-//var map = L.map('map');
-//L.tileLayer('https://www.openstreetmap.org/#map=15/55.8778/-4.2390', {
-//  attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
-//}).addTo(map);
-
-//var gpx = 'A.gpx'; // URL to your GPX file or the GPX itself
-
-//var gpxFile = new L.GPX(gpx, {});
 function loadGraphs(gpxData){
-  console.log(gpxData.get_elevation_data());
-
+  
+  // Elevation Line Chart
+  
+  // start constructing chart data
   var elevations = [];
   var times = [];
 
@@ -21,7 +15,6 @@ function loadGraphs(gpxData){
     times.push((count*15)/60);
   }
 
-
   elevationOverTime = []
   for(let count=0 ; count<elevations.length;count++){
     elevationOverTime.push( {x:times[count], y:elevations[count]} );
@@ -29,7 +22,6 @@ function loadGraphs(gpxData){
 
   // get time of run in decimal mins 
   var endTime = times.slice(-1)[0];
-  console.log(endTime);
 
   var data = {
       // Our series array that contains series objects or in this case series data arrays
@@ -48,13 +40,13 @@ function loadGraphs(gpxData){
         },
         axisX:{
           type: Chartist.FixedScaleAxis,
+          // display minutes in 8 fixed segments
           ticks: [0, Math.round(endTime*0.125), Math.round(endTime*0.25), Math.round(endTime*0.375), Math.round(endTime*0.5), Math.round(endTime*0.625), Math.round(endTime*0.75), Math.round(endTime*0.875), Math.round(endTime)],
           low: 0
         },
           axisY: {
           onlyInteger: true
         },
-        //low: 0,
         showArea: true,
         plugins: [
           Chartist.plugins.ctAxisTitle({
@@ -76,19 +68,24 @@ function loadGraphs(gpxData){
               },
               flipTitle: false
             }
+          }),
+          Chartist.plugins.ctAccessibility({
+            caption: 'A graphical chart showing elevation over time for this exercise',
+            seriesHeader: 'elevation in metres recorded every 15 seconds or quarter of a minute',
+            summary: 'Elevation is metres above sea level, time is in minutes from start of activity',
+            valueTransform: function(value) {
+              return value + 'metres';
+            }
           })
         ]
       
     };
     
-    // Create a new line chart object where as first parameter we pass in a selector
-    // that is resolving to our chart container element. The Second parameter
-    // is the actual data object.
-    new Chartist.Line('.ct-line-chart', data, options);
+  // Create the line chart object 
+  elevationChart = new Chartist.Line('.ct-line-chart', data, options);
 
 
-    console.log(gpxData.get_heartrate_data());
-
+  // Heartbeat Donut Chart
   var hbBucket1 = 0; // less than 60
   var hbBucket2 = 0; // 50 - 100
   var hbBucket3 = 0; // 100 - 125
@@ -96,7 +93,7 @@ function loadGraphs(gpxData){
   var hbBucket5 = 0; // 150 - 175
   var hbBucket6 = 0;  // 175+
     
-  // extract the actual heartbeat numbers
+  // extract the actual heartbeat numbers and populate buckets
   gpxData.get_heartrate_data().forEach(function(element) {
     if(element[1] < 60){
       hbBucket1++;
@@ -115,7 +112,8 @@ function loadGraphs(gpxData){
     
   var numHeartbeats = gpxData.get_heartrate_data().length;
     
-    new Chartist.Pie('.ct-pie-chart', {
+  heartChart = new Chartist.Pie('.ct-pie-chart', {
+      // we want the heartbeat data as percentages
       series: [(hbBucket1/numHeartbeats)*100,(hbBucket2/numHeartbeats)*100,(hbBucket3/numHeartbeats)*100,(hbBucket4/numHeartbeats)*100,(hbBucket5/numHeartbeats)*100,(hbBucket6/numHeartbeats)*100,],
       labels: ['<60', '60-100', '100-125', '125-150', '150-175', '>175']
     }, {
@@ -129,32 +127,37 @@ function loadGraphs(gpxData){
                 items: [{
                     content: '<i class="fas fa-heartbeat fa-7x" style="color:red"></i>',
                     offsetY:-60,
-
                 }]
+            }),
+            Chartist.plugins.ctAccessibility({
+              caption: 'A graphical chart showing percentage time spent at different heartbeat levels',
+              summary: '6 preset heartbeat levels were chosen. In order: less than 60, 60 to 100, 100 to 125, 125 to 150, 150 to 175 and 175 plus.',
+              valueTransform: function(value) {
+                return value + '%';
+              }
             })
         ]
     });
 
     
-  }
+}
 
-
-  function activatetab(tab) {
+function activatetab(tab) {
+  var thetabs = document.getElementsByClassName('tab');
+  [].forEach.call(thetabs, function(thetab) {
+    thetab.classList.remove('active');
+  });
+  document.getElementById('tab' + tab).classList.add('active');
   
-    resizeMap(); $(window).resize(resizeMap);
+  var thetabcontents = document.getElementsByClassName('tabcontent');
+  [].forEach.call(thetabcontents, function(thetabcontent) {
+    thetabcontent.classList.remove('active');
+  });
+  document.getElementById('tabcontent' + tab).classList.add('active');
 
-    var thetabs = document.getElementsByClassName('tab');
-    [].forEach.call(thetabs, function(thetab) {
-      thetab.classList.remove('active');
-    });
-    document.getElementById('tab' + tab).classList.add('active');
-    
-    var thetabcontents = document.getElementsByClassName('tabcontent');
-    [].forEach.call(thetabcontents, function(thetabcontent) {
-      thetabcontent.classList.remove('active');
-    });
-    document.getElementById('tabcontent' + tab).classList.add('active');
-    
+  // fixes rendering bug!
+  heartChart.update();
+  elevationChart.update();
 
-    $(window).resize();
   }
+

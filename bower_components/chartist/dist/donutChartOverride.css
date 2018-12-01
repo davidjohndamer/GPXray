@@ -1,3 +1,5 @@
+/* custom colours for the heartbeat chart */
+
 .ct-series-a .ct-slice-donut {
   /* give the donut slice a custom colour */
   stroke: #59922b;

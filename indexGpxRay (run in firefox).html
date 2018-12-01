@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title> GPX-Ray </title>
+
+    <script>
+        
+        // Show error message if app takes a while to initialize
+        // (probably due to resources not loading).
+        var _init = false;
+        window.setTimeout(function () {
+            if (!_init)
+                document.getElementById('drop').innerHTML = 'The application is having trouble loading. Please reload.';
+        }, 5000);
+        </script>
+ 
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+    <link rel="stylesheet" href="viewer.css" />
+    <link rel="stylesheet" href="tabs.css"/>
+    <link rel="stylesheet" href="bower_components/chartist/dist/chartist.css">
+    <link rel="stylesheet" href="bower_components/chartist/dist/donutChartOverride.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+</head>
+<body> 
+    <header>
+        <h1><a href=""> GPX-Ray</a></h1>
+    </header>
+
+    <div id="tabs" class="" style="display: none">
+        <div class="tabs">
+            <a onClick="activatetab('1');" id="tab1" class="tab active">Map</a>
+            <a onClick="activatetab('2')" id="tab2" class="tab">Elevation</a>
+            <a onClick="activatetab('3')" id="tab3" class="tab">Heartbeat</a>
+        </div>
+    
+        <div class="content">
+            <div id="tabcontent1" class="tabcontent active">
+                <div id="map"></div>
+            </div>
+            <div id="tabcontent2" class="tabcontent">
+                    <!-- Chartist chart! -->
+                <div class="ct-line-chart ct-square" style="height: 500px; max-width: 1000px; margin: 0 auto; margin-top:50px;"></div>
+            </div>
+            <div id="tabcontent3" class="tabcontent">
+                <div class="ct-pie-chart ct-square" style="height: 500px; max-width: 1000px; margin: 0 auto; margin-top:100px;"></div>
+            </div>
+        </div>
+          
+    </div>
+
+    <div id="drop">
+        <noscript>This application requires JavaScript.</noscript>
+        <p id="drop-text">
+            Click To Load Or Drag And Drop A GPX File
+        </p>
+
+        <div id="text-box">
+            <div>Visualise Your GPX Files Quickly And Easily.</div>
+        </div>
+    </div>
+
+    <input type="file" id="load" />
+
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="leaflet-gpx/gpx.js"></script>
+    <script src="GpxRayMap.js"></script>
+    <script src="bower_components/chartist/dist/chartist.js"></script>
+    <script src="node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js"></script>
+    <script src="node_modules/chartist-plugin-fill-donut/dist/chartist-plugin-fill-donut.js"></script>
+    <script src="node_modules/chartist-plugin-accessibility/dist/chartist-plugin-accessibility.js"></script>
+    <script src="myCharts.js" type="text/javascript"></script>
+</body>
+</html>
